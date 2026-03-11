@@ -102,3 +102,11 @@ If you are running the project locally or deploying your own version, you can ut
 
 ## 📄 License
 This project is open-source and available for educational and personal use.
+
+## 🚀 Output 
+<img width="1906" height="891" alt="image" src="https://github.com/user-attachments/assets/1cbd57e7-b4a3-4218-b92e-0070b1937b0d" />
+<img width="1918" height="870" alt="image" src="https://github.com/user-attachments/assets/921a737e-acfb-472d-89ff-27548e1afb91" />
+<img width="1883" height="875" alt="image" src="https://github.com/user-attachments/assets/24463042-6cd2-4664-8b35-b4a0f5536e25" />
+<img width="387" height="328" alt="image" src="https://github.com/user-attachments/assets/c7f9aed6-329d-4e69-98ee-f7c8cac17039" />
+
+
