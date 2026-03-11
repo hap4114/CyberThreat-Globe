@@ -362,6 +362,7 @@ function CinematicIntro({ onDone }) {
     phases.forEach((_, i) => timers.push(setTimeout(() => setPhase(i), i * 700)));
     timers.push(setTimeout(onDone, phases.length * 700 + 600));
     return () => timers.forEach(clearTimeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return <div style={{ position: "fixed", inset: 0, zIndex: 300, background: "#020810", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 0 }}>
     {/* Animated grid */}
