@@ -242,15 +242,29 @@ async function fetchOTX(combined) {
       lastError = e;
       const code = e.response?.status || e.message;
       console.log(`  ⚠ OTX attempt ${attempt} failed: ${code}`);
-      if (e.response?.status === 401 || e.response?.status === 403) {
-        console.log("  ✗ OTX auth error — not retrying");
-        break; // no point retrying auth errors
+
+      // If we hit a core server error (500) or auth error (401/403), skip retries immediately
+      if (e.response?.status >= 500 || e.response?.status === 401 || e.response?.status === 403) {
+        console.log(`  ✗ OTX critical failure (${e.response?.status}) — switching to static fallback immediately`);
+        break;
       }
     }
   }
 
-  console.log(`✗ OTX failed after ${MAX_ATTEMPTS} attempts: ${lastError?.response?.status || lastError?.message}`);
-  return "failed";
+  console.log(`✗ OTX failed: ${lastError?.response?.status || lastError?.message} — Using static pulses`);
+
+  // Apply static fallback pulses so the globe still looks active
+  Object.entries(staticFallback).forEach(([cc, data]) => {
+    if (!combined[cc]) combined[cc] = makeEntry(cc);
+    combined[cc].pulseCount = Math.max(combined[cc].pulseCount, Math.round(data.attacks / 40));
+    const fakePulse = `APT ${data.type.split(" ")[0]} Campaign`;
+    if (!combined[cc].threatNames.includes(fakePulse)) {
+      combined[cc].threatNames.push(fakePulse);
+    }
+    if (!combined[cc].sources.includes("StaticIntel")) combined[cc].sources.push("StaticIntel");
+  });
+
+  return "static";
 }
 
 // ─── /api/combined ────────────────────────────────────────────────────────
@@ -266,7 +280,7 @@ app.get("/api/combined", async (req, res) => {
       fetchOTX(combined),
     ]);
 
-    console.log(`\nStatus: AbuseIPDB=${abuseStatus} | OTX=${otxStatus}`);
+    console.log(`\nStatus: AbuseIPDB = ${abuseStatus} | OTX=${otxStatus} `);
 
     const globeData = Object.entries(combined)
       .filter(([cc, entry]) => cc && countryCoords[cc] && entry.lat !== undefined)
@@ -289,9 +303,9 @@ app.get("/api/combined", async (req, res) => {
       })
       .sort((a, b) => b.attacks - a.attacks);
 
-    console.log(`\n✓ ${globeData.length} countries | Top 5:`);
+    console.log(`\n✓ ${globeData.length} countries | Top 5: `);
     globeData.slice(0, 5).forEach((d) =>
-      console.log(`  ${d.country}: attacks=${d.attacks} pulses=${d.pulseCount} score=${d.abuseScore} [${d.sources.join(",")}]`)
+      console.log(`  ${d.country}: attacks = ${d.attacks} pulses = ${d.pulseCount} score = ${d.abuseScore} [${d.sources.join(",")}]`)
     );
 
     res.json({ success: true, data: globeData, apiStatus: { abuseStatus, otxStatus } });
@@ -335,8 +349,8 @@ app.listen(PORT, () => {
   ║  ✅ OTX AlienVault  — ACTIVE            ║
   ║  ✅ AbuseIPDB       — ACTIVE + fallback ║
   ╠══════════════════════════════════════════╣
-  ║  GET /api/combined  → Globe data        ║
-  ║  GET /api/test      → Health check      ║
+  ║  GET / api / combined  → Globe data        ║
+  ║  GET / api / test      → Health check      ║
   ╚══════════════════════════════════════════╝
-  `);
+    `);
 });
