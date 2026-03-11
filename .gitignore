@@ -1,0 +1,7 @@
+node_modules/
+build/
+.env
+.DS_Store
+cyber-backend/node_modules/
+cyberthreat-globe/node_modules/
+cyberthreat-globe/build/
