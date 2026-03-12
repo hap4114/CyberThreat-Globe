@@ -8,26 +8,6 @@
   [![Backend](https://img.shields.io/badge/API-Render-ff6b35?style=for-the-badge&logo=render)](https://cyberthreat-globe.onrender.com)
 </div>
 
----
-
-## 📸 Screenshots
-
-*(Add your screenshots here by replacing the placeholder links!)*
-
-**🌍 Main 3D Globe View**
-*(Shows the dark-themed planet with glowing arcs for live attacks)*
-> ![Main Globe View](https://via.placeholder.com/800x450/020810/00ff88?text=Add+Main+Globe+Screenshot+Here)
-
-**📊 Threat Intelligence Panel**
-*(Shows the right-side summary, abuse scores, and incident trend graphs)*
-> ![Threat Intel Panel](https://via.placeholder.com/800x450/020810/ff6b35?text=Add+Right+Panel+Dashboard+Screenshot)
-
-**⚡ Live Threat Feed**
-*(Shows the real-time event log and top 10 leaderboard)*
-> ![Live Feed](https://via.placeholder.com/800x450/020810/ffd60a?text=Add+Live+Feed+Screenshot)
-
----
-
 ## ✨ Features
 
 - **Interactive 3D Globe**: Built with `react-globe.gl` and `three.js`, dynamically mapping threat origins and animating live attack arcs between countries.
